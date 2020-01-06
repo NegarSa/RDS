@@ -2,14 +2,14 @@ import numpy as np
 
 
 class RDS:
-    def __init__(self, n, inf, sup, LowerB):
+    def __init__(self, n, inf, sup, C):
         self.n = n
         self.assignment = np.zeros(n)
         self.temp_assignment = [-1] * n
         self.rds = np.zeres(n + 1)
         self.inf = inf
         self.sup = sup
-        self.LowerBound = LowerB
+        self.C = C
 
     def DFBB(self, lbi, ubi, i):
         lb = inf
@@ -65,9 +65,46 @@ class RDS:
         return ub
 
     def UPPERBOUND(ubi, lbp, i):
+        # TODO: Change the definition
         return 99999999999
 
+    def LowerBound(i, v):
+        lb1 = 0
+        for c in self.C['Sum'].keys():
+            r = 0
+            for var in c[1:]:
+                if var == 1:
+                    r = (r + var) % 2
+            if r != c[0]:
+                lb1 += self.C['Sum'].get(c) 
+        for c in self.C['More'].keys():
+            r = 0
+            for var in c[1:]:
+                if var == 1:
+                    r = (r + A[var])
+            if r < c[0]:
+                lb1 += self.C['More'].get(c)
+        lb2 = 0
+        lb3 = 0
+        return lb1 + lb2 + lb3
 
-def LowerBound(A, i, v, C):
-    lb1 = 
 
+c = {
+    'Sum': {
+        [0, 0, 1, 0, 0, 0, 0, 0, 0]: 1,
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]: 1,
+        [0, 0, 0, 1, 0, 0, 0, 0, 0]: 1,
+        [0, 0, 0, 0, 1, 0, 0, 0, 0]: 1,
+        [0, 0, 0, 0, 0, 1, 0, 0, 0]: 1,
+        [0, 0, 0, 0, 0, 0, 1, 0, 0]: 1,
+        [0, 0, 0, 0, 0, 0, 0, 1, 0]: 1,
+        [0, 0, 0, 0, 0, 0, 0, 0, 1]: 1,
+        [0, 0, 0, 0, 0, 1, 1, 1, 1]: 99999999999,
+        [0, 0, 1, 0, 1, 0, 1, 0, 1]: 99999999999,
+        [0, 0, 0, 1, 1, 0, 0, 1, 1]: 99999999999,
+        [0, 1, 1, 1, 1, 1, 1, 1, 1]: 99999999999,
+    },
+    'More': {
+        [1, 1, 1, 1, 1, 1, 1, 1, 1]: 99999999999,
+    }
+}
