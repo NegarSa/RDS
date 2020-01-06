@@ -70,20 +70,37 @@ class RDS:
 
     def LowerBound(i, v):
         lb1 = 0
+
+        def last_var_assigned(c):
+
+            def c_includes_var(c, var):
+                if c[var] == 1:
+                    return True
+                else:
+                    return False
+
+            for i in range(n, 1, -1):
+                if c_includes_var(c, i):
+                    continue
+                else:
+                    return i + 1
+            return 1
+
         for c in self.C['Sum'].keys():
-            r = 0
-            for var in c[1:]:
-                if var == 1:
-                    r = (r + var) % 2
-            if r != c[0]:
-                lb1 += self.C['Sum'].get(c) 
-        for c in self.C['More'].keys():
-            r = 0
-            for var in c[1:]:
-                if var == 1:
-                    r = (r + A[var])
-            if r < c[0]:
-                lb1 += self.C['More'].get(c)
+            if last_var_assigned(c) < v:
+                r = 0
+                for var in c[1:]:
+                    if var == 1:
+                        r = (r + var) % 2
+                if r != c[0]:
+                    lb1 += self.C['Sum'].get(c) 
+            for c in self.C['More'].keys():
+                r = 0
+                for var in c[1:]:
+                    if var == 1:
+                        r = (r + A[var])
+                if r < c[0]:
+                    lb1 += self.C['More'].get(c)
         lb2 = 0
         lb3 = 0
         return lb1 + lb2 + lb3
@@ -92,7 +109,7 @@ class RDS:
 c = {
     'Sum': {
         [0, 0, 1, 0, 0, 0, 0, 0, 0]: 1,
-        [0, 0, 0, 0, 0, 0, 0, 0, 0]: 1,
+        [0, 1, 0, 0, 0, 0, 0, 0, 0]: 1,
         [0, 0, 0, 1, 0, 0, 0, 0, 0]: 1,
         [0, 0, 0, 0, 1, 0, 0, 0, 0]: 1,
         [0, 0, 0, 0, 0, 1, 0, 0, 0]: 1,
