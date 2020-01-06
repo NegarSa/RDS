@@ -1,4 +1,5 @@
 import numpy as np
+import operator
 
 
 class RDS:
@@ -125,3 +126,16 @@ c = {
         [1, 1, 1, 1, 1, 1, 1, 1, 1]: 99999999999,
     }
 }
+
+# C = {
+#     'Mod2': [
+#         {'Constraint': [0, 0, 0, 0, 0, 1, 1, 1, 1], 'Result': (operator.eq, 0)},
+#         {'Constraint': [0, 0, 1, 0, 1, 0, 1, 0, 1], 'Result': (operator.eq, 0)},
+#         {'Constraint': [0, 0, 0, 1, 1, 0, 0, 1, 1], 'Result': (operator.eq, 0)},
+#         {'Constraint': [0, 1, 1, 1, 1, 1, 1, 1, 1], 'Result': (operator.eq, 0)}
+#     ],
+#     'Mod10': [
+#         {'Constraint': [1, 1, 1, 1, 1, 1, 1, 1, 1], 'Result': (operator.ge, 1)}
+#     ]
+# }
+# OB = [1, 1, 1, 1, 1, 1, 1, 1]
