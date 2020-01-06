@@ -1,6 +1,8 @@
 import numpy as np
 import operator
 
+very_large_number = 999999999999999
+
 
 class RDS:
     def __init__(self, n, inf, sup, C):
@@ -67,7 +69,7 @@ class RDS:
 
     def UPPERBOUND(ubi, lbp, i):
         # TODO: Change the definition
-        return 99999999999
+        return very_large_number
 
     def LowerBound(i, v):
         lb1 = 0
@@ -105,37 +107,3 @@ class RDS:
         lb2 = 0
         lb3 = 0
         return lb1 + lb2 + lb3
-
-
-c = {
-    'Sum': {
-        [0, 0, 1, 0, 0, 0, 0, 0, 0]: 1,
-        [0, 1, 0, 0, 0, 0, 0, 0, 0]: 1,
-        [0, 0, 0, 1, 0, 0, 0, 0, 0]: 1,
-        [0, 0, 0, 0, 1, 0, 0, 0, 0]: 1,
-        [0, 0, 0, 0, 0, 1, 0, 0, 0]: 1,
-        [0, 0, 0, 0, 0, 0, 1, 0, 0]: 1,
-        [0, 0, 0, 0, 0, 0, 0, 1, 0]: 1,
-        [0, 0, 0, 0, 0, 0, 0, 0, 1]: 1,
-        [0, 0, 0, 0, 0, 1, 1, 1, 1]: 99999999999,
-        [0, 0, 1, 0, 1, 0, 1, 0, 1]: 99999999999,
-        [0, 0, 0, 1, 1, 0, 0, 1, 1]: 99999999999,
-        [0, 1, 1, 1, 1, 1, 1, 1, 1]: 99999999999,
-    },
-    'More': {
-        [1, 1, 1, 1, 1, 1, 1, 1, 1]: 99999999999,
-    }
-}
-
-# C = {
-#     'Mod2': [
-#         {'Constraint': [0, 0, 0, 0, 0, 1, 1, 1, 1], 'Result': (operator.eq, 0)},
-#         {'Constraint': [0, 0, 1, 0, 1, 0, 1, 0, 1], 'Result': (operator.eq, 0)},
-#         {'Constraint': [0, 0, 0, 1, 1, 0, 0, 1, 1], 'Result': (operator.eq, 0)},
-#         {'Constraint': [0, 1, 1, 1, 1, 1, 1, 1, 1], 'Result': (operator.eq, 0)}
-#     ],
-#     'Mod10': [
-#         {'Constraint': [1, 1, 1, 1, 1, 1, 1, 1, 1], 'Result': (operator.ge, 1)}
-#     ]
-# }
-# OB = [1, 1, 1, 1, 1, 1, 1, 1]
