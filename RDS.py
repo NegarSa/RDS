@@ -66,6 +66,7 @@ class RDS:
                 return 'Fail'
         return ub
 
+    @staticmethod
     def upper_bound(self, ubi, lbp, i):
         # TODO: Change the definition
         return very_large_number
