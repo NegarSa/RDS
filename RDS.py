@@ -14,6 +14,14 @@ class RDS:
         self.C = c
 
     def dfbb(self, lbi, ubi, i):
+        """
+        This function is the classical depth-first branch-&-bound algorithm which
+        we modified for our instances of interest.
+        :param lbi: inital lower bound
+        :param ubi: initial upper bound
+        :param i: all variables indexed >= i are being branch-&-bound-ed
+        :return: an upper bound for the partial assignment of values between i and n; F if fails to do such.
+        """
 
         values = {
             'lb': self.inf,
@@ -24,6 +32,9 @@ class RDS:
         }
 
         def depth():
+            """
+            This function deepens to n. i.e moves across the depth of the tree.
+            """
             if values['v'] == self.n:
                 values['s'] = True
                 values['ub'] = values['lb']
@@ -37,7 +48,11 @@ class RDS:
                 values['v'] = values['v'] + 1
 
         def width():
-            if self.temp_assignment[values['v']] == 1:
+            """
+            This function moves along the width of a certain level by checking possible
+            values from the domain; Stops if reaches the final value for the domain.
+            """
+            if self.temp_assignment[values['v']] == 1: # TODO: add domain value to class attributes
                 values['v'] = values['v'] - 1
                 if values['v'] == i:
                     end()
@@ -70,7 +85,7 @@ class RDS:
                 self.rds[i] = ub
             else:
                 return 'Fail'
-        return ub
+        return ub  # TODO: Referenced before assignment?? return the assignment or return nothing instead
 
     @staticmethod
     def upper_bound(ubi, lbp, i):
