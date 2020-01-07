@@ -128,10 +128,12 @@ class RDS:
         :return: the lower bound to the partial assignment with one step ahead vision.
         """
         assigned_vars = np.array([1 if j in range(i, v) else 0 for j in range(self.n)])
+
         #  LB_bc
         #  We know which var is assigned; the we apply the given constraint on the partial assignment
         #  Note the way we calculated the violation. We made a element-wise product of the assignment
         #  and the constraint
+
         lb_bc = 0
         for c in self.C:
             if self.all_var_in_cons(c, assigned_vars):
@@ -140,18 +142,19 @@ class RDS:
                     lb_bc += c['Valuation']
 
         # LB_fc
+        # Now, we are looking for the constraints that can be violated one step ahead.
         lb_fc = 0
         for c in self.C:
-            for vv in (list(set(range(self.n)) - set(range(i, v)))):
+            for vv in (list(set(range(self.n)) - set(range(i, v)))):  # vars that are not assigned
                 tmp = assigned_vars
-                tmp[vv] = 1
+                tmp[vv] = 1  # assigning one more var
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
                     temp_temp_a = self.temp_assignment
-                    temp_temp_a[vv] = 0
+                    temp_temp_a[vv] = 0   # first assign it to 0 - calculate the violation value  # TODO: all the domain
                     val_0 = c['Valuation'] \
                         if not c['Result'][0](np.sum(np.multiply(
                                                      np.array(c['Constraint']), temp_temp_a)), c['Result'][1]) else 0
-                    temp_temp_a[vv] = 1
+                    temp_temp_a[vv] = 1  # first assign it to 1 - calculate the violation value
                     val_1 = c['Valuation'] \
                         if not c['Result'][0](np.sum(np.multiply(
                                                      np.array(c['Constraint']), temp_temp_a)), c['Result'][1]) else 0
