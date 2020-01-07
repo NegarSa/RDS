@@ -6,10 +6,9 @@ very_large_number = 999999999999999
 class RDS:
     def __init__(self, n, inf, sup, c):
         """
-
         :param n: Number of variables
-        :param inf: the minimum value of ??
-        :param sup: the maximum value of ??
+        :param inf: the minimum value of result
+        :param sup: the maximum value of result
         :param c: constraints in a really cool form.
         """
         self.n = n
@@ -21,7 +20,6 @@ class RDS:
         self.C = c
 
     def dfbb(self, lbi, ubi, i):
-
         """
         This function is the classical depth-first branch-&-bound algorithm which
         we modified for our instances of interest.
@@ -57,10 +55,13 @@ class RDS:
 
         def width():
             """
-            This function moves along the width of a certain level by checking possible
-            values from the domain; Stops if reaches the final value for the domain.
+            This function moves along the width of a certain level
+            by checking possible values from the domain;
+            Stops if reaches the final value for the domain.
             """
-            if self.temp_assignment[values['v']] == 1:  # TODO: add domain value to class attributes
+
+            if self.temp_assignment[values['v']] == 1:
+                # TODO: add domain value to class attributes
                 values['v'] = values['v'] - 1
                 if values['v'] == i:
                     end()
@@ -85,9 +86,9 @@ class RDS:
 
     def rds_function(self, ubi):
         """
-        The main function of RDS algorithm. Starting from the last variable, we run branch-&-bound so we
-        have an proper upper bound. Then we use the previous upper bound as the lower bound for the next
-        subproblem.
+        The main function of RDS algorithm. Starting from the last variable,
+        we run branch-&-bound so we have an proper upper bound. Then we use
+        the previous upper bound as the lower bound for the next subproblem.
         :param ubi: initial upper bound
         :return: not sure
         """
