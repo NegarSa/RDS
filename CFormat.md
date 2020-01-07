@@ -27,19 +27,20 @@ def op_ge_mod10(a, b):
     return a >= b
 
 
-C = {
-    [0, 0, 1, 0, 0, 0, 0, 0, 0]: (op_eq_mod2, 1),
-    [0, 1, 0, 0, 0, 0, 0, 0, 0]: (op_eq_mod2, 1),
-    [0, 0, 0, 1, 0, 0, 0, 0, 0]: (op_eq_mod2, 1),
-    [0, 0, 0, 0, 1, 0, 0, 0, 0]: (op_eq_mod2, 1),
-    [0, 0, 0, 0, 0, 1, 0, 0, 0]: (op_eq_mod2, 1),
-    [0, 0, 0, 0, 0, 0, 1, 0, 0]: (op_eq_mod2, 1),
-    [0, 0, 0, 0, 0, 0, 0, 1, 0]: (op_eq_mod2, 1),
-    [0, 0, 0, 0, 0, 0, 0, 0, 1]: (op_eq_mod2, 1),
-    [0, 0, 0, 0, 0, 1, 1, 1, 1]: (op_eq_mod2, very_large_number),
-    [0, 0, 1, 0, 1, 0, 1, 0, 1]: (op_eq_mod2, very_large_number),
-    [0, 0, 0, 1, 1, 0, 0, 1, 1]: (op_eq_mod2, very_large_number),
-    [0, 1, 1, 1, 1, 1, 1, 1, 1]: (op_eq_mod2, very_large_number),
-    [1, 1, 1, 1, 1, 1, 1, 1, 1]: (op_ge_mod10, very_large_number),
-}
+
+C = [
+	{'Constraint': [1, 0, 0, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 1, 0, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 1, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 0, 1, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 0, 0, 1, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 0, 0, 0, 1, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 0, 0, 0, 0, 1, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 0, 0, 0, 0, 0, 1], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+	{'Constraint': [0, 0, 0, 0, 1, 1, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+	{'Constraint': [0, 1, 0, 1, 0, 1, 0, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+	{'Constraint': [0, 0, 1, 1, 0, 0, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+	{'Constraint': [1, 1, 1, 1, 1, 1, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+	{'Constraint': [1, 1, 1, 1, 1, 1, 1, 1], 'Result': (op_ge_mod10, 1), 'Valuation': very_large_number},
+]
 ```

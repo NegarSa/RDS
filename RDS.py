@@ -89,21 +89,15 @@ class RDS:
                     return i + 1
             return 1
 
-        for c in self.C['Sum'].keys():
-            if last_var_assigned(c) < v:
+        for c in C.keys():
+            if last_var_assigned(c) <= v:
                 r = 0
                 for var in c[1:]:
                     if var == 1:
-                        r = (r + var) % 2
-                if r != c[0]:
-                    lb1 += self.C['Sum'].get(c) 
-            for c in self.C['More'].keys():
-                r = 0
-                for var in c[1:]:
-                    if var == 1:
-                        r = (r + A[var])
-                if r < c[0]:
-                    lb1 += self.C['More'].get(c)
+                        r = (r + var)
+                if c.get(c)[0](r, c[0]):
+                    lb1 += c.get(c)[1]
+            
         lb2 = 0
         lb3 = 0
         return lb1 + lb2 + lb3
