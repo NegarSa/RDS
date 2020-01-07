@@ -9,20 +9,20 @@ class RDS:
         self.n = n
         self.assignment = np.zeros(n)
         self.temp_assignment = [-1] * n
-        self.rds = np.zeres(n + 1)
+        self.rds = np.zeros(n + 1)
         self.inf = inf
         self.sup = sup
         self.C = C
 
     def DFBB(self, lbi, ubi, i):
-        lb = inf
+        lb = self.inf
         ub = ubi
         v = i
         s = False
         current = 0
 
         def depth():
-            if v == n:
+            if v == self.n:
                 s = True
                 ub = lb
                 self.assignment = self.temp_assignment
@@ -32,7 +32,7 @@ class RDS:
                     end()
 
         def width():
-            if A[v] == d:
+            if self.temp_assignment[v] == d:
                 v = v - 1
                 if v == i:
                     end()
@@ -40,7 +40,7 @@ class RDS:
                     width()
             else:
                 self.temp_assignment[v] += 1
-                lb = LowerBound(i, v)
+                lb = self.LowerBound(i, v)
                 if lb < ub:
                     depth()
                 else:
@@ -56,18 +56,18 @@ class RDS:
         return current
 
     def RDS(self, ubi):
-        rds[self.n] = inf
-        for i in range(n - 1, 0, -1):
-            lbp = rds[i + 1]
-            ubp = UPPERBOUND(ubi, lbp, i)
+        self.rds[self.n] = self.inf
+        for i in range(self.n - 1, 0, -1):
+            lbp = self.rds[i + 1]
+            ubp = self.UPPERBOUND(ubi, lbp, i)
             ub = self.DFBB(lbp, ubp, i)
             if ub != 'F':
-                rds[i] = ub
+                self.rds[i] = ub
             else:
                 return 'Fail'
         return ub
 
-    def UPPERBOUND(ubi, lbp, i):
+    def UPPERBOUND(self, ubi, lbp, i):
         # TODO: Change the definition
         return very_large_number
 
@@ -99,19 +99,21 @@ class RDS:
             else:
                 return 0
         lb1 = 0
-        for c in C:
-            lb1 += lbbc(temp_assignment, c)
+        for c in self.C:
+            lb1 += lbbc(self.temp_assignment, c)
 
         lb2 = 0
-        for c in C:
+        for c in self.C:
             lv = last_var_assigned(c['Constraint'])
             for v in range(0, lv):
                 r = [0, 0]
                 for i in [0, 1]:
-                    A = temp_assignment
+                    A = self.temp_assignment
                     A[v] = i
                     r[i] += lbbc(A, c)
                 lb2 += min(r[0], r[1])
                 
-        lb3 = rds[v]
+        lb3 = self.rds[v]
         return lb1 + lb2 + lb3
+
+
