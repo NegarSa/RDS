@@ -2,13 +2,13 @@ from RDS import RDS
 
 very_large_number = 999999999999999
 
+
 def op_eq_mod2(a, b):
     return a == (b % 2)
 
 
 def op_ge_mod10(a, b):
     return a >= b
-
 
 
 C = [
@@ -28,4 +28,4 @@ C = [
 ]
 
 solve = RDS(8, 0, very_large_number, C)
-print(solve.RDS(very_large_number))
+print(solve.rds_function(very_large_number))
