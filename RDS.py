@@ -72,12 +72,11 @@ class RDS:
         return very_large_number
 
     def LowerBound(i, v):
-        lb1 = 0
 
         def last_var_assigned(c):
 
             def c_includes_var(c, var):
-                if c[var] == 1:
+                if c['Constraint'][var] == 1:
                     return True
                 else:
                     return False
@@ -89,15 +88,30 @@ class RDS:
                     return i + 1
             return 1
 
-        for c in C.keys():
-            if last_var_assigned(c) <= v:
+        def lbbc(A, c):
+            if last_var_assigned(c['Constraint']) <= v:
                 r = 0
-                for var in c[1:]:
+                for var in c['Constraint']:
                     if var == 1:
-                        r = (r + var)
-                if c.get(c)[0](r, c[0]):
-                    lb1 += c.get(c)[1]
-            
+                        r = (r + A[var])
+                if c['Result'][0](r, c['Result'][1]):
+                    return c['Valuation']
+            else:
+                return 0
+        lb1 = 0
+        for c in C:
+            lb1 += lbbc(temp_assignment, c)
+
         lb2 = 0
-        lb3 = 0
+        for c in C:
+            lv = last_var_assigned(c['Constraint'])
+            for v in range(0, lv):
+                r = [0, 0]
+                for i in [0, 1]:
+                    A = temp_assignment
+                    A[v] = i
+                    r[i] += lbbc(A, c)
+                lb2 += min(r[0], r[1])
+                
+        lb3 = rds[v]
         return lb1 + lb2 + lb3
