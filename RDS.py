@@ -43,6 +43,7 @@ class RDS:
             """
             This function deepens to n. i.e moves across the depth of the tree.
             """
+            print('DEPTH')
             if values['v'] == self.n:
                 values['s'] = True
                 values['ub'] = values['lb']
@@ -73,7 +74,7 @@ class RDS:
             by checking possible values from the domain;
             Stops if reaches the final value for the domain.
             """
-
+            print('WIDTH')
             if self.temp_assignment[values['v']] == 1:
                 # TODO: add domain value to class attributes
                 print('reached the final value for the domain for variable: ' + str(values['v']))
@@ -95,15 +96,20 @@ class RDS:
                 print('The assignment is: ', end='')
                 print(self.temp_assignment)
                 if values['lb'] < values['ub']:
-                    ''
+                    print('The lower bound founded is less than the upper bound fixed.')
                     depth()
                 else:
+                    print('We have found a lower bound that is greater than the upper bound.')
                     width()
 
         def end():
+            print('END:')
             if values['s']:
+                print('Final achieved upper bound: ', end='')
                 values['current'] = values['ub']
+                print(values['ub'])
             else:
+                print('Never achieved a fulfilling assignment yet made it to a exiting condition. i.e. Failure.')
                 values['current'] = 'F'
 
         depth()
