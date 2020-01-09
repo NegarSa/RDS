@@ -76,15 +76,26 @@ class RDS:
 
             if self.temp_assignment[values['v']] == 1:
                 # TODO: add domain value to class attributes
+                print('reached the final value for the domain for variable: ' + str(values['v']))
+                print('Rolling back')
                 values['v'] = values['v'] - 1
                 if values['v'] == i:
+                    print('We have reached the final value for all variables from ' + str(i) + 'to ' + str(self.n))
                     end()
                 else:
+                    print('var ' + values['v'] + 'is not ')
                     width()
             else:
+                print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
                 self.temp_assignment[values['v']] += 1
+                print('Moving to the next value for the :' + str(values['v']))
+                print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
                 values['lb'] = self.lower_bound(i, values['v'], values['so_far'])
+                print('The lower bound from' + str(i) + ' to ' + str(values['so_far']))
+                print('The assignment is: ', end='')
+                print(self.temp_assignment)
                 if values['lb'] < values['ub']:
+                    ''
                     depth()
                 else:
                     width()
@@ -101,8 +112,9 @@ class RDS:
     def rds_function(self, ubi):
         """
         The main function of RDS algorithm. Starting from the last variable,
-        we run branch-&-bound so we have an proper upper bound. Then we use
-        the previous upper bound as the lower bound for the next sub-problem.
+        we on the partial sub-problem limited to i-n variables run branch-&-bound
+        so we have an proper upper bound. Then we use the previous upper bound as
+        the lower bound for the next sub-problem.
         :param ubi: initial upper bound
         :return: not sure
         """
