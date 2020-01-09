@@ -24,7 +24,7 @@ class RDS:
         """
         This function is the classical depth-first branch-&-bound algorithm which
         we modified for our instances of interest.
-        :param lbi: inital lower bound
+        :param lbi: initial lower bound
         :param ubi: initial upper bound
         :param i: all variables indexed >= i are being branch-&-bound-ed
         :return: an upper bound for the partial assignment of values between i and n; F if fails to do such.
@@ -126,12 +126,21 @@ class RDS:
         """
         self.rds[self.n] = self.inf
         for i in range(self.n - 1, 0, -1):
+            print('RDS main loop')
+            print('i: ' + str(i))
             lbp = self.rds[i + 1]
+            print('Lower Bound for this sub-problem: ' + str(lbp))
             ubp = self.upper_bound(ubi, lbp, i)
+            print('The upper bound for this sub-problem: ' + str(ubp))
             ub = self.dfbb(lbp, ubp, i)
+            print('BACK TO RDS')
+            print('DFBB result: ' + str(ub))
             if ub != 'F':
+                print('Saving this Upper Bound in RDS array')
                 self.rds[i] = ub
+                print(self.rds)
             else:
+                print('FAILURE')
                 return 'Fail'
         return ub  # TODO: Referenced before assignment?? return the assignment or return nothing instead
 
@@ -167,10 +176,13 @@ class RDS:
         #  We know which var is assigned; the we apply the given constraint on the partial assignment
         #  Note the way we calculated the violation. We made a element-wise product of the assignment
         #  and the constraint
-
+        print('Assigned Variables: ', end='')
+        print(assigned_vars)
+        print("Calculating the backward checking lower-bound")
         lb_bc = 0
         for c in self.C:
             if self.all_var_in_cons(c, assigned_vars):
+                print('This ')
                 if not c['Result'][0](np.sum(np.multiply(np.array(c['Constraint']),
                                                          self.temp_assignment)), c['Result'][1]):
                     lb_bc += c['Valuation']
