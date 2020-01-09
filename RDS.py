@@ -47,13 +47,23 @@ class RDS:
                 values['s'] = True
                 values['ub'] = values['lb']
                 self.assignment = self.temp_assignment
+                print('All the variables have been assigned')
+                print('S = True | Upper Bound Found: ' + str(values['ub']))
+                print('Assignment: ', end='')
+                print(self.assignment)
                 if lbi < values['ub']:
+                    print('Initial LB is less than the new upperbound')
                     width()
                 else:
+                    print('Upper Bound has surpassed the initial LB')
                     end()
             else:
-                self.temp_assignment[values['v']] = self.sup - 1
+                print('Current var is not the last one')
+                self.temp_assignment[values['v']] = -1
+                print('Assignment valid from ' + str(i))
+                print(self.temp_assignment)
                 values['v'] = values['v'] + 1
+                print('v is now: ' + str(values['v']))
                 if values['so_far'] != self.n:
                     values['so_far'] += 1
 
