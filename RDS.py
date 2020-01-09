@@ -12,8 +12,9 @@ class RDS:
         :param c: constraints in a really cool form.
         """
         self.n = n
-        self.assignment = np.zeros(n)  # initial assignment, this is used in dfbb # TODO: move it there
-        self.temp_assignment = [-1] * n  # initial assignment, this is used in dfbb and lower-bound (needed here tho)
+        self.assignment = np.zeros(n)  # initial assignment
+        self.temp_assignment = [-1] * n   # initial assignment, this is used in dfbb and lower-bound
+        # TODO: (needed here tho?)
         self.rds = np.zeros(n + 1)  # the rds vector, the upper-bounds of each sub-problem
         self.inf = inf
         self.sup = sup
@@ -34,7 +35,8 @@ class RDS:
             'ub': ubi,  # Modifiable UB
             'v': i,  # start point for assigning
             's': False,  # Whether or not we have checked all the vars from i to n
-            'current': 0  # Return value
+            'current': 0,  # Return value
+            'so_far': i
         }  # Why? Since the outer variables were only to read inside not modify; But this way you can.
 
         def depth():
@@ -52,6 +54,8 @@ class RDS:
             else:
                 self.temp_assignment[values['v']] = self.sup - 1
                 values['v'] = values['v'] + 1
+                if values['so_far'] != self.n:
+                    values['so_far'] += 1
 
         def width():
             """
@@ -69,7 +73,7 @@ class RDS:
                     width()
             else:
                 self.temp_assignment[values['v']] += 1
-                values['lb'] = self.lower_bound(i, values['v'])
+                values['lb'] = self.lower_bound(i, values['v'], values['so_far'])
                 if values['lb'] < values['ub']:
                     depth()
                 else:
@@ -88,7 +92,7 @@ class RDS:
         """
         The main function of RDS algorithm. Starting from the last variable,
         we run branch-&-bound so we have an proper upper bound. Then we use
-        the previous upper bound as the lower bound for the next subproblem.
+        the previous upper bound as the lower bound for the next sub-problem.
         :param ubi: initial upper bound
         :return: not sure
         """
@@ -121,14 +125,15 @@ class RDS:
         """
         return np.any(np.subtract(constraint, assigned_vars) == -1)
 
-    def lower_bound(self, i, v):
+    def lower_bound(self, i, v, so_far):
         """
         The original lower-bound function. Consists of backward-checking, forward-checking, and RDS value.
-        :param i: variables i to v are assigned
-        :param v: variables i to v are assigned
+        :param i: variables i to so_far are assigned
+        :param v: variable currently being modified
+        :param so_far: variables i to so_far are assigned
         :return: the lower bound to the partial assignment with one step ahead vision.
         """
-        assigned_vars = np.array([1 if j in range(i, v) else 0 for j in range(self.n)])
+        assigned_vars = np.array([1 if j in range(i, so_far) else 0 for j in range(self.n)])
 
         #  LB_bc
         #  We know which var is assigned; the we apply the given constraint on the partial assignment
@@ -146,7 +151,7 @@ class RDS:
         # Now, we are looking for the constraints that can be violated one step ahead.
         lb_fc = 0
         for c in self.C:
-            for vv in (list(set(range(self.n)) - set(range(i, v)))):  # vars that are not assigned
+            for vv in (list(set(range(self.n)) - set(range(i, so_far)))):  # vars that are not assigned
                 tmp = assigned_vars
                 tmp[vv] = 1  # assigning one more var
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
@@ -163,6 +168,7 @@ class RDS:
                     lb_fc += min(val_0, val_1)
 
         # LB_rds
+        # Refer to the main paper for an explanation on this one
         lb_rds = self.rds[v]
 
         return lb_bc + lb_fc + lb_rds
