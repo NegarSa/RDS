@@ -182,10 +182,12 @@ class RDS:
         lb_bc = 0
         for c in self.C:
             if self.all_var_in_cons(c, assigned_vars):
-                print('This ')
+                print('This constraint involves a subset of variables in the partial assignment')
+                print(c['Constraint'])
                 if not c['Result'][0](np.sum(np.multiply(np.array(c['Constraint']),
                                                          self.temp_assignment)), c['Result'][1]):
                     lb_bc += c['Valuation']
+                    print('LBBC :' + str(c['Valuation']))
 
         # LB_fc
         # Now, we are looking for the constraints that can be violated one step ahead.
@@ -193,22 +195,30 @@ class RDS:
         for c in self.C:
             for vv in (list(set(range(self.n)) - set(range(i, so_far)))):  # vars that are not assigned
                 tmp = assigned_vars
+                print('Variable ' + str(vv) + ' is not assigned yet.')
                 tmp[vv] = 1  # assigning one more var
+
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
+                    print('This constraint involves a subset of variables in the partial assignment now')
+                    print(c['Constraint'])
                     temp_temp_a = self.temp_assignment
+                    print('But what if we assign value 0 to it?')
                     temp_temp_a[vv] = 0   # first assign it to 0 - calculate the violation value  # TODO: all the domain
                     val_0 = c['Valuation'] \
                         if not c['Result'][0](np.sum(np.multiply(
                                                      np.array(c['Constraint']), temp_temp_a)), c['Result'][1]) else 0
+                    print('It has the valuation of: ' + str(val_0))
+                    print('But what if we assign value 0 to it?')
                     temp_temp_a[vv] = 1  # first assign it to 1 - calculate the violation value
                     val_1 = c['Valuation'] \
                         if not c['Result'][0](np.sum(np.multiply(
                                                      np.array(c['Constraint']), temp_temp_a)), c['Result'][1]) else 0
-
+                    print('It has the valuation of: ' + str(val_0))
                     lb_fc += min(val_0, val_1)
+                    print('Now we have our LBFC to:' + str(lb_fc))
 
         # LB_rds
         # Refer to the main paper for an explanation on this one
         lb_rds = self.rds[v]
-
+        print('LB_RDS: ' + str(lb_rds))
         return lb_bc + lb_fc + lb_rds
