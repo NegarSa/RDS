@@ -161,7 +161,7 @@ class RDS:
         :param assigned_vars: an array indicating the assigned variables so far
         :return: True if the assigned variables is a subset to variables in the constraint
         """
-        return np.any(np.subtract(constraint['Constraint'], assigned_vars) == -1)
+        return not np.any(np.subtract(constraint['Constraint'], assigned_vars) == -1)
 
     def lower_bound(self, i, v, so_far):
         """
@@ -196,7 +196,7 @@ class RDS:
         for c in self.C:
             for vv in (list(set(range(self.n)) - set(range(i, so_far)))):  # vars that are not assigned
                 tmp = assigned_vars
-                print('Variable ' + str(vv) + ' is not assigned yet.')
+                # print('Variable ' + str(vv) + ' is not assigned yet.')
                 tmp[vv] = 1  # assigning one more var
 
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
