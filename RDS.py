@@ -161,7 +161,7 @@ class RDS:
         :param assigned_vars: an array indicating the assigned variables so far
         :return: True if the assigned variables is a subset to variables in the constraint
         """
-        return not np.any(np.subtract(constraint['Constraint'], assigned_vars) == -1)
+        return not np.any(np.subtract(assigned_vars, constraint['Constraint'] ) == -1)
 
     def lower_bound(self, i, v, so_far):
         """

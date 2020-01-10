@@ -29,3 +29,4 @@ C = [
 
 solve = RDS(8, 0, very_large_number, C)
 print(solve.rds_function(very_large_number))
+print(solve.assignment)
