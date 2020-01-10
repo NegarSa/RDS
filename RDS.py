@@ -44,7 +44,7 @@ class RDS:
             This function deepens to n. i.e moves across the depth of the tree.
             """
             print('DEPTH')
-            if values['v'] == self.n:
+            if values['v'] == self.n - 1:
                 values['s'] = True
                 values['ub'] = values['lb']
                 self.assignment = self.temp_assignment
@@ -60,13 +60,14 @@ class RDS:
                     end()
             else:
                 print('Current var is not the last one')
-                self.temp_assignment[values['v']] = -1
                 print('Assignment valid from ' + str(i))
                 print(self.temp_assignment)
                 values['v'] = values['v'] + 1
+                self.temp_assignment[values['v']] = -1
                 print('v is now: ' + str(values['v']))
                 if values['so_far'] != self.n:
                     values['so_far'] += 1
+                width()
 
         def width():
             """
@@ -160,7 +161,7 @@ class RDS:
         :param assigned_vars: an array indicating the assigned variables so far
         :return: True if the assigned variables is a subset to variables in the constraint
         """
-        return np.any(np.subtract(constraint, assigned_vars) == -1)
+        return np.any(np.subtract(constraint['Constraint'], assigned_vars) == -1)
 
     def lower_bound(self, i, v, so_far):
         """
