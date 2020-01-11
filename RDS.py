@@ -12,8 +12,8 @@ class RDS:
         :param c: constraints in a really cool form.
         """
         self.n = n
-        self.assignment = np.zeros(n)  # initial assignment
-        self.temp_assignment = [-1] * n   # initial assignment, this is used in dfbb and lower-bound
+        self.assignment = np.zeros(n + 1)  # initial assignment
+        self.temp_assignment = np.zeros(n + 1)  # initial assignment, this is used in dfbb and lower-bound
         # TODO: (needed here tho?)
         self.rds = np.zeros(n + 1)  # the rds vector, the upper-bounds of each sub-problem
         self.inf = inf
@@ -44,7 +44,7 @@ class RDS:
             This function deepens to n. i.e moves across the depth of the tree.
             """
             print('DEPTH')
-            if values['v'] == self.n - 1:
+            if values['v'] == self.n:
                 values['s'] = True
                 values['ub'] = values['lb']
                 self.assignment = self.temp_assignment
@@ -53,7 +53,7 @@ class RDS:
                 print('Assignment: ', end='')
                 print(self.assignment)
                 if lbi < values['ub']:
-                    print('Initial LB is less than the new upperbound')
+                    print('Initial LB is less than the new upper-bound')
                     width()
                 else:
                     print('Upper Bound has surpassed the initial LB')
@@ -85,7 +85,7 @@ class RDS:
                     print('We have reached the final value for all variables from ' + str(i) + 'to ' + str(self.n))
                     end()
                 else:
-                    print('var ' + values['v'] + 'is not ')
+                    print('var ' + str(values['v']) + 'is not ')
                     width()
             else:
                 print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
@@ -93,7 +93,7 @@ class RDS:
                 print('Moving to the next value for the :' + str(values['v']))
                 print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
                 values['lb'] = self.lower_bound(i, values['v'], values['so_far'])
-                print('The lower bound from' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
+                print('The lower bound from ' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
                 print('The assignment is: ', end='')
                 print(self.temp_assignment)
                 if values['lb'] < values['ub']:
@@ -161,7 +161,7 @@ class RDS:
         :param assigned_vars: an array indicating the assigned variables so far
         :return: True if the assigned variables is a subset to variables in the constraint
         """
-        return not np.any(np.subtract(assigned_vars, constraint['Constraint'] ) == -1)
+        return not np.any(np.subtract(assigned_vars, constraint['Constraint']) == -1)
 
     def lower_bound(self, i, v, so_far):
         """
@@ -171,7 +171,7 @@ class RDS:
         :param so_far: variables i to so_far are assigned
         :return: the lower bound to the partial assignment with one step ahead vision.
         """
-        assigned_vars = np.array([1 if j in range(i, so_far) else 0 for j in range(self.n)])
+        assigned_vars = np.array([0] + [1 if j in range(i, so_far) else 0 for j in range(self.n)])
 
         #  LB_bc
         #  We know which var is assigned; the we apply the given constraint on the partial assignment
@@ -196,10 +196,11 @@ class RDS:
         for c in self.C:
             for vv in (list(set(range(self.n)) - set(range(i, so_far)))):  # vars that are not assigned
                 tmp = assigned_vars
-                # print('Variable ' + str(vv) + ' is not assigned yet.')
+
                 tmp[vv] = 1  # assigning one more var
 
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
+                    print('Variable ' + str(vv) + ' is not assigned yet.')
                     print('This constraint involves a subset of variables in the partial assignment now')
                     print(c['Constraint'])
                     temp_temp_a = self.temp_assignment

@@ -12,19 +12,19 @@ def op_ge_mod10(a, b):
 
 
 C = [
-    {'Constraint': [1, 0, 0, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 1, 0, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 1, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 0, 1, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 0, 0, 1, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 0, 0, 0, 1, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 0, 0, 0, 0, 1, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 0, 0, 0, 0, 0, 1], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
-    {'Constraint': [0, 0, 0, 0, 1, 1, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
-    {'Constraint': [0, 1, 0, 1, 0, 1, 0, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
-    {'Constraint': [0, 0, 1, 1, 0, 0, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
-    {'Constraint': [1, 1, 1, 1, 1, 1, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
-    {'Constraint': [1, 1, 1, 1, 1, 1, 1, 1], 'Result': (op_ge_mod10, 1), 'Valuation': very_large_number},
+    {'Constraint': [0, 1, 0, 0, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 1, 0, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 1, 0, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 0, 1, 0, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 0, 0, 1, 0, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 0, 0, 0, 1, 0, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 0, 0, 0, 0, 1, 0], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 0, 0, 0, 0, 0, 1], 'Result': (op_eq_mod2, 0), 'Valuation': 1},
+    {'Constraint': [0, 0, 0, 0, 0, 1, 1, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+    {'Constraint': [0, 0, 1, 0, 1, 0, 1, 0, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+    {'Constraint': [0, 0, 0, 1, 1, 0, 0, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+    {'Constraint': [0, 1, 1, 1, 1, 1, 1, 1, 1], 'Result': (op_eq_mod2, 0), 'Valuation': very_large_number},
+    {'Constraint': [0, 1, 1, 1, 1, 1, 1, 1, 1], 'Result': (op_ge_mod10, 1), 'Valuation': very_large_number},
 ]
 
 solve = RDS(8, 0, very_large_number, C)
