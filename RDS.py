@@ -13,7 +13,7 @@ class RDS:
         """
         self.n = n
         self.assignment = np.zeros(n + 1)  # initial assignment
-        self.temp_assignment = [0] + [-1] * n  # initial assignment, this is used in dfbb and lower-bound
+        self.temp_assignment = np.zeros(n + 1)  # initial assignment, this is used in dfbb and lower-bound
         # TODO: (needed here tho?)
         self.rds = np.zeros(n + 1)  # the rds vector, the upper-bounds of each sub-problem
         self.inf = inf
@@ -38,7 +38,7 @@ class RDS:
             'current': 0,  # Return value
             'so_far': i
         }  # Why? Since the outer variables were only to read inside not modify; But this way you can.
-
+        self.temp_assignment = np.zeros(self.n + 1)
         def depth():
             """
             This function deepens to n. i.e moves across the depth of the tree.
@@ -85,7 +85,7 @@ class RDS:
                     print('We have reached the final value for all variables from ' + str(i) + 'to ' + str(self.n))
                     end()
                 else:
-                    print('var ' + str(values['v']) + 'is not ')
+                    print('var ' + str(values['v']) + ' is not the starting variable!')
                     width()
             else:
                 print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
@@ -183,6 +183,8 @@ class RDS:
         lb_bc = 0
         for c in self.C:
             if self.all_var_in_cons(c, assigned_vars):
+                print('Partial Assignment')
+                print(self.temp_assignment)
                 print('This constraint involves a subset of variables in the partial assignment')
                 print(c['Constraint'])
                 if not c['Result'][0](np.sum(np.multiply(np.array(c['Constraint']),
@@ -201,9 +203,12 @@ class RDS:
 
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
                     print('Variable ' + str(vv) + ' is not assigned yet.')
+                    print('Partial Assignment that I made')
+                    temp_temp_a = self.temp_assignment
+                    print(temp_temp_a)
                     print('This constraint involves a subset of variables in the partial assignment now')
                     print(c['Constraint'])
-                    temp_temp_a = self.temp_assignment
+
                     print('But what if we assign value 0 to it?')
                     temp_temp_a[vv] = 0   # first assign it to 0 - calculate the violation value  # TODO: all the domain
                     val_0 = c['Valuation'] \

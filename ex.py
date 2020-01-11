@@ -4,7 +4,7 @@ very_large_number = 999999999999999
 
 
 def op_eq_mod2(a, b):
-    return a == (b % 2)
+    return (a % 2) == b
 
 
 def op_ge_mod10(a, b):
