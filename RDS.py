@@ -93,7 +93,7 @@ class RDS:
                 print('Moving to the next value for the :' + str(values['v']))
                 print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
                 values['lb'] = self.lower_bound(i, values['v'], values['so_far'])
-                print('The lower bound from' + str(i) + ' to ' + str(values['so_far']))
+                print('The lower bound from' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
                 print('The assignment is: ', end='')
                 print(self.temp_assignment)
                 if values['lb'] < values['ub']:
@@ -126,7 +126,7 @@ class RDS:
         :return: not sure
         """
         self.rds[self.n] = self.inf
-        for i in range(self.n - 1, 0, -1):
+        for i in range(self.n - 1, -1, -1):
             print('RDS main loop')
             print('i: ' + str(i))
             lbp = self.rds[i + 1]
