@@ -13,7 +13,7 @@ class RDS:
         """
         self.n = n
         self.assignment = np.zeros(n + 1)  # initial assignment
-        self.temp_assignment = np.zeros(n + 1)  # initial assignment, this is used in dfbb and lower-bound
+        self.temp_assignment = [0] + [-1] * n  # initial assignment, this is used in dfbb and lower-bound
         # TODO: (needed here tho?)
         self.rds = np.zeros(n + 1)  # the rds vector, the upper-bounds of each sub-problem
         self.inf = inf
@@ -52,7 +52,7 @@ class RDS:
                 print('S = True | Upper Bound Found: ' + str(values['ub']))
                 print('Assignment: ', end='')
                 print(self.assignment)
-                if lbi < values['ub']:
+                if lbi <= values['ub']:
                     print('Initial LB is less than the new upper-bound')
                     width()
                 else:
@@ -96,7 +96,7 @@ class RDS:
                 print('The lower bound from ' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
                 print('The assignment is: ', end='')
                 print(self.temp_assignment)
-                if values['lb'] < values['ub']:
+                if values['lb'] <= values['ub']:
                     print('The lower bound founded is less than the upper bound fixed.')
                     depth()
                 else:
