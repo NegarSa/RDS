@@ -19,6 +19,7 @@ class RDS:
         self.inf = inf
         self.sup = sup
         self.C = c
+        
 
     def dfbb(self, lbi, ubi, i):
         """
@@ -47,11 +48,12 @@ class RDS:
             if values['v'] == self.n:
                 values['s'] = True
                 values['ub'] = values['lb']
-                self.assignment = self.temp_assignment
+                self.assignment = list(self.temp_assignment)
                 print('All the variables have been assigned')
                 print('S = True | Upper Bound Found: ' + str(values['ub']))
                 print('Assignment: ', end='')
                 print(self.assignment)
+                print('==========================================================================================================')
                 if lbi <= values['ub']:
                     print('Initial LB is less than the new upper-bound')
                     width()
@@ -128,6 +130,7 @@ class RDS:
         self.rds[self.n] = self.inf
         for i in range(self.n - 1, -1, -1):
             print('RDS main loop')
+            print("MAIN ASSIGNMENT: " + str(self.assignment))
             print('i: ' + str(i))
             lbp = self.rds[i + 1]
             print('Lower Bound for this sub-problem: ' + str(lbp))
