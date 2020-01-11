@@ -53,7 +53,6 @@ class RDS:
                 print('S = True | Upper Bound Found: ' + str(values['ub']))
                 print('Assignment: ', end='')
                 print(self.assignment)
-                print('==========================================================================================================')
                 if lbi <= values['ub']:
                     print('Initial LB is less than the new upper-bound')
                     width()
