@@ -33,7 +33,7 @@ def convert(filename):
         t[i + 1] = 1
         c['Constraint'] = t
         c['Valuation'] = 1
-        if(random.random() > 0.6):
+        if random.random() > 0.6:
             c['Result'] = (op_eq_mod2, 0)
         else:
             c['Result'] = (op_eq_mod2, 1)
