@@ -27,6 +27,7 @@ class RDS:
         :param lbi: initial lower bound
         :param ubi: initial upper bound
         :param i: all variables indexed >= i are being branch-&-bound-ed
+        :param verbose: logs
         :return: an upper bound for the partial assignment of values between i and n; F if fails to do such.
         """
 
@@ -128,7 +129,7 @@ class RDS:
                 values['lb'] = self.lower_bound(i, values['v'], values['so_far'], verbose)
 
                 if verbose:
-                    print('The lower bound from ' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
+                    print('The lower bound for ' + str(i) + ' - ' + str(values['so_far']) + ' is ' + str(values['lb']))
                     print('The assignment is: ', end='')
                     print(self.temp_assignment)
 
@@ -238,6 +239,7 @@ class RDS:
         :param i: variables i to so_far are assigned
         :param v: variable currently being modified
         :param so_far: variables i to so_far are assigned
+        :param verbose: logs
         :return: the lower bound to the partial assignment with one step ahead vision.
         """
         assigned_vars = np.array([0] + [1 if j in range(i, so_far) else 0 for j in range(self.n)])
