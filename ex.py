@@ -28,5 +28,6 @@ C = [
 ]
 
 solve = RDS(8, 0, very_large_number, C)
-print(solve.rds_function(very_large_number))
-print(solve.assignment)
+print()
+print("Final Value is: " + str(solve.rds_function(very_large_number, 0)))
+print("Best Assignment: " + str(solve.assignment))
