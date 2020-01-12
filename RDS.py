@@ -91,42 +91,80 @@ class RDS:
             by checking possible values from the domain;
             Stops if reaches the final value for the domain.
             """
-            print('WIDTH')
+
+            if verbose:
+                print('WIDTH')
+
             if self.temp_assignment[values['v']] == 1:
                 # TODO: add domain value to class attributes
-                print('reached the final value for the domain for variable: ' + str(values['v']))
-                print('Rolling back')
+                if verbose:
+                    print('reached the final value for the domain for variable: ' + str(values['v']))
+                    print('Rolling back')
+
                 values['v'] = values['v'] - 1
                 if values['v'] == i:
-                    print('We have reached the final value for all variables from ' + str(i) + 'to ' + str(self.n))
+
+                    if verbose:
+                        print('We have reached the final value for all variables from ' + str(i) + 'to ' + str(self.n))
+
                     end()
                 else:
-                    print('var ' + str(values['v']) + ' is not the starting variable!')
+
+                    if verbose:
+                        print('var ' + str(values['v']) + ' is not the starting variable!')
+
                     width()
             else:
-                print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
+
+                if verbose:
+                    print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
+
                 self.temp_assignment[values['v']] += 1
-                print('Moving to the next value for the :' + str(values['v']))
-                print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
-                values['lb'] = self.lower_bound(i, values['v'], values['so_far'])
-                print('The lower bound from ' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
-                print('The assignment is: ', end='')
-                print(self.temp_assignment)
+
+                if verbose:
+                    print('Moving to the next value for the :' + str(values['v']))
+                    print('Current Value of Var ' + str(values['v']) + ' :' + str(self.temp_assignment[values['v']]))
+
+                values['lb'] = self.lower_bound(i, values['v'], values['so_far'], verbose)
+
+                if verbose:
+                    print('The lower bound from ' + str(i) + ' to ' + str(values['so_far']) + ' is ' + str(values['lb']))
+                    print('The assignment is: ', end='')
+                    print(self.temp_assignment)
+
                 if values['lb'] <= values['ub']:
-                    print('The lower bound founded is less than the upper bound fixed.')
+
+                    if verbose:
+                        print('The lower bound founded is less than the upper bound fixed.')
+
                     depth()
                 else:
-                    print('We have found a lower bound that is greater than the upper bound.')
+
+                    if verbose:
+                        print('We have found a lower bound that is greater than the upper bound.')
+
                     width()
 
         def end():
-            print('END:')
+
+            if verbose:
+                print('END:')
+
             if values['s']:
-                print('Final achieved upper bound: ', end='')
+
+                if verbose:
+                    print('Final achieved upper bound: ', end='')
+
                 values['current'] = values['ub']
-                print(values['ub'])
+
+                if verbose:
+                    print(values['ub'])
+
             else:
-                print('Never achieved a fulfilling assignment yet made it to a exiting condition. i.e. Failure.')
+
+                if verbose:
+                    print('Never achieved a fulfilling assignment yet made it to a exiting condition. i.e. Failure.')
+
                 values['current'] = 'F'
 
         depth()
