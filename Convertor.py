@@ -42,7 +42,7 @@ def convert(filename):
 
 
 if __name__ == '__main__':
-    n, C = convert(os.path.join('inputs', 'INPUT_FILE (1).txt'))
+    n, C = convert(os.path.join('inputs', 'INPUT_FILE (3).txt'))
     solve = RDS(n, 0, very_large_number, C)
     print()
     print("Final Value is: " + str(solve.rds_function(very_large_number, verbose=0)))
