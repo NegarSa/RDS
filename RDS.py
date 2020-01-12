@@ -19,9 +19,8 @@ class RDS:
         self.inf = inf
         self.sup = sup
         self.C = c
-        
 
-    def dfbb(self, lbi, ubi, i):
+    def dfbb(self, lbi, ubi, i, verbose):
         """
         This function is the classical depth-first branch-&-bound algorithm which
         we modified for our instances of interest.
@@ -45,28 +44,43 @@ class RDS:
             """
             This function deepens to n. i.e moves across the depth of the tree.
             """
-            print('DEPTH')
+            if verbose:
+                print('DEPTH')
+
             if values['v'] == self.n:
                 values['s'] = True
                 values['ub'] = values['lb']
                 self.assignment = list(self.temp_assignment)
-                print('All the variables have been assigned')
-                print('S = True | Upper Bound Found: ' + str(values['ub']))
-                print('Assignment: ', end='')
-                print(self.assignment)
+
+                if verbose:
+                    print('All the variables have been assigned')
+                    print('S = True | Upper Bound Found: ' + str(values['ub']))
+                    print('Assignment: ', end='')
+                    print(self.assignment)
+
                 if lbi <= values['ub']:
-                    print('Initial LB is less than the new upper-bound')
+
+                    if verbose:
+                        print('Initial LB is less than the new upper-bound')
+
                     width()
                 else:
-                    print('Upper Bound has surpassed the initial LB')
+                    if verbose:
+                        print('Upper Bound has surpassed the initial LB')
+
                     end()
             else:
-                print('Current var is not the last one')
-                print('Assignment valid from ' + str(i))
-                print(self.temp_assignment)
+                if verbose:
+                    print('Current var is not the last one')
+                    print('Assignment valid from ' + str(i))
+                    print(self.temp_assignment)
+
                 values['v'] = values['v'] + 1
                 self.temp_assignment[values['v']] = -1
-                print('v is now: ' + str(values['v']))
+
+                if verbose:
+                    print('v is now: ' + str(values['v']))
+
                 if values['so_far'] != self.n:
                     values['so_far'] += 1
                 width()
@@ -139,11 +153,11 @@ class RDS:
             if verbose:
                 print('Lower Bound for this sub-problem: ' + str(lbp))
 
-            ubp = self.upper_bound(ubi, lbp, i)
+            ubp = self.upper_bound(ubi, lbp, i, verbose)
             if verbose:
                 print('The upper bound for this sub-problem: ' + str(ubp))
 
-            ub = self.dfbb(lbp, ubp, i)
+            ub = self.dfbb(lbp, ubp, i, verbose)
             if verbose:
                 print('BACK TO RDS')
                 print('DFBB result: ' + str(ub))
