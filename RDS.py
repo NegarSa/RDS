@@ -40,6 +40,7 @@ class RDS:
             'so_far': i
         }  # Why? Since the outer variables were only to read inside not modify; But this way you can.
         self.temp_assignment = np.zeros(self.n + 1)
+
         def depth():
             """
             This function deepens to n. i.e moves across the depth of the tree.
@@ -117,33 +118,47 @@ class RDS:
         depth()
         return values['current']
 
-    def rds_function(self, ubi):
+    def rds_function(self, ubi, verbose):
         """
         The main function of RDS algorithm. Starting from the last variable,
         we on the partial sub-problem limited to i-n variables run branch-&-bound
         so we have an proper upper bound. Then we use the previous upper bound as
         the lower bound for the next sub-problem.
         :param ubi: initial upper bound
+        :param verbose: whether or not to show the logs.
         :return: not sure
         """
         self.rds[self.n] = self.inf
         for i in range(self.n - 1, -1, -1):
-            print('RDS main loop')
-            print("MAIN ASSIGNMENT: " + str(self.assignment))
-            print('i: ' + str(i))
+            if verbose:
+                print('RDS main loop')
+                print("MAIN ASSIGNMENT: " + str(self.assignment))
+                print('i: ' + str(i))
+
             lbp = self.rds[i + 1]
-            print('Lower Bound for this sub-problem: ' + str(lbp))
+            if verbose:
+                print('Lower Bound for this sub-problem: ' + str(lbp))
+
             ubp = self.upper_bound(ubi, lbp, i)
-            print('The upper bound for this sub-problem: ' + str(ubp))
+            if verbose:
+                print('The upper bound for this sub-problem: ' + str(ubp))
+
             ub = self.dfbb(lbp, ubp, i)
-            print('BACK TO RDS')
-            print('DFBB result: ' + str(ub))
+            if verbose:
+                print('BACK TO RDS')
+                print('DFBB result: ' + str(ub))
+
             if ub != 'F':
-                print('Saving this Upper Bound in RDS array')
+                if verbose:
+                    print('Saving this Upper Bound in RDS array')
+
                 self.rds[i] = ub
-                print(self.rds)
+                if verbose:
+                    print(self.rds)
             else:
-                print('FAILURE')
+                if verbose:
+                    print('FAILURE')
+
                 return 'Fail'
         return ub  # TODO: Referenced before assignment?? return the assignment or return nothing instead
 
