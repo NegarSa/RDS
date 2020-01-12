@@ -177,7 +177,7 @@ class RDS:
         return ub  # TODO: Referenced before assignment?? return the assignment or return nothing instead
 
     @staticmethod
-    def upper_bound(ubi, lbp, i):
+    def upper_bound(ubi, lbp, i, verbose):
         # TODO: Change the definition
         return very_large_number
 
@@ -194,7 +194,7 @@ class RDS:
         """
         return not np.any(np.subtract(assigned_vars, constraint['Constraint']) == -1)
 
-    def lower_bound(self, i, v, so_far):
+    def lower_bound(self, i, v, so_far, verbose):
         """
         The original lower-bound function. Consists of backward-checking, forward-checking, and RDS value.
         :param i: variables i to so_far are assigned
@@ -208,20 +208,28 @@ class RDS:
         #  We know which var is assigned; the we apply the given constraint on the partial assignment
         #  Note the way we calculated the violation. We made a element-wise product of the assignment
         #  and the constraint
-        print('Assigned Variables: ', end='')
-        print(assigned_vars)
-        print("Calculating the backward checking lower-bound")
+
+        if verbose:
+            print('Assigned Variables: ', end='')
+            print(assigned_vars)
+            print("Calculating the backward checking lower-bound")
+
         lb_bc = 0
         for c in self.C:
             if self.all_var_in_cons(c, assigned_vars):
-                print('Partial Assignment')
-                print(self.temp_assignment)
-                print('This constraint involves a subset of variables in the partial assignment')
-                print(c['Constraint'])
+
+                if verbose:
+                    print('Partial Assignment')
+                    print(self.temp_assignment)
+                    print('This constraint involves a subset of variables in the partial assignment')
+                    print(c['Constraint'])
+
                 if not c['Result'][0](np.sum(np.multiply(np.array(c['Constraint']),
                                                          self.temp_assignment)), c['Result'][1]):
                     lb_bc += c['Valuation']
-                    print('LBBC :' + str(c['Valuation']))
+
+                    if verbose:
+                        print('LBBC :' + str(c['Valuation']))
 
         # LB_fc
         # Now, we are looking for the constraints that can be violated one step ahead.
@@ -233,30 +241,46 @@ class RDS:
                 tmp[vv] = 1  # assigning one more var
 
                 if not self.all_var_in_cons(c, assigned_vars) and self.all_var_in_cons(c, tmp):
-                    print('Variable ' + str(vv) + ' is not assigned yet.')
-                    print('Partial Assignment that I made')
-                    temp_temp_a = self.temp_assignment
-                    print(temp_temp_a)
-                    print('This constraint involves a subset of variables in the partial assignment now')
-                    print(c['Constraint'])
 
-                    print('But what if we assign value 0 to it?')
+                    if verbose:
+                        print('Variable ' + str(vv) + ' is not assigned yet.')
+                        print('Partial Assignment that I made')
+
+                    temp_temp_a = self.temp_assignment
+
+                    if verbose:
+                        print(temp_temp_a)
+                        print('This constraint involves a subset of variables in the partial assignment now')
+                        print(c['Constraint'])
+                        print('But what if we assign value 0 to it?')
+
                     temp_temp_a[vv] = 0   # first assign it to 0 - calculate the violation value  # TODO: all the domain
                     val_0 = c['Valuation'] \
                         if not c['Result'][0](np.sum(np.multiply(
                                                      np.array(c['Constraint']), temp_temp_a)), c['Result'][1]) else 0
-                    print('It has the valuation of: ' + str(val_0))
-                    print('But what if we assign value 0 to it?')
+
+                    if verbose:
+                        print('It has the valuation of: ' + str(val_0))
+                        print('But what if we assign value 0 to it?')
+
                     temp_temp_a[vv] = 1  # first assign it to 1 - calculate the violation value
                     val_1 = c['Valuation'] \
                         if not c['Result'][0](np.sum(np.multiply(
                                                      np.array(c['Constraint']), temp_temp_a)), c['Result'][1]) else 0
-                    print('It has the valuation of: ' + str(val_0))
+
+                    if verbose:
+                        print('It has the valuation of: ' + str(val_0))
+
                     lb_fc += min(val_0, val_1)
-                    print('Now we have our LBFC to:' + str(lb_fc))
+
+                    if verbose:
+                        print('Now we have our LBFC to:' + str(lb_fc))
 
         # LB_rds
         # Refer to the main paper for an explanation on this one
         lb_rds = self.rds[v]
-        print('LB_RDS: ' + str(lb_rds))
+
+        if verbose:
+            print('LB_RDS: ' + str(lb_rds))
+
         return lb_bc + lb_fc + lb_rds
