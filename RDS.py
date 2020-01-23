@@ -215,14 +215,14 @@ class RDS:
                 return 'Fail'
         return ub  # TODO: Referenced before assignment?? return the assignment or return nothing instead
 
-    def upper_bound(self, ubi, lbp, i, verbose):
+    def upper_bound(self, i, verbose):
         upper_bound = self.rds[i]
         assigned_var = [1 if j >= i + 2 else 0 for j in range(self.n + 1)]
         assigned_var_new = [1 if j >= i + 1 else 0 for j in range(self.n + 1)]
         for c in self.C:
             if self.all_var_in_cons(c, assigned_var_new) and not self.all_var_in_cons(c, assigned_var):
                 upper_bound += c['Valuation']
-        return upper_bound
+        return upper_bound  # TODO: add the verbose messages!
         # return very_large_number
 
     @staticmethod
